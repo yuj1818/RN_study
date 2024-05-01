@@ -3,27 +3,57 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import Constants from 'expo-constants';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
+import Colors from './constants/colors';
+import GameOverScreen from './screens/GameOverScreen';
 
 export default function App() {
   const [userNumer, setUserNumber] = useState();
+  const [isOver, setIsOver] = useState(true);
+  const [rounds, setRounds] = useState(0);
+
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
+  function gameOverHandler(numberOrRounds) {
+    setIsOver(true);
+    setRounds(numberOrRounds);
+  }
+
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setRounds(0);
+  }
 
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
+    setIsOver(false);
   }
 
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />
 
   if (userNumer) {
-    screen = <GameScreen />
+    screen = <GameScreen userNumber={userNumer} onGameOver={gameOverHandler} />
+  }
+
+  if (isOver && userNumer) {
+    screen = <GameOverScreen userNumber={userNumer} roundsNumber={rounds} onStartNewGame={startNewGameHandler} />
   }
 
   return (
     <>
-    <StatusBar style="light" />
-      <LinearGradient colors={['#4e0329', '#ddb52f']} style={styles.rootScreen}>
+      <StatusBar style="light" />
+      <LinearGradient colors={[Colors.primary700, Colors.accent500]} style={styles.rootScreen}>
         <ImageBackground 
           source={require('./assets/images/background.png')} 
           resizeMode='cover'

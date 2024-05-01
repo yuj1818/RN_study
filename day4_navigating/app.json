@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "day3_counting_game_app",
-    "slug": "day3_counting_game_app",
+    "name": "day4_navigating",
+    "slug": "day4_navigating",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "backgroundColor": "#24180f",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,9 +26,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-font"
-    ]
+    }
   }
 }
